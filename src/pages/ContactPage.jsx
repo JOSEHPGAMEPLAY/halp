@@ -6,16 +6,8 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 import { collection, addDoc } from "firebase/firestore";
 import { db } from "../services/firebase";
+import { contactValidation } from './../validations/ContactValidation';
 
-// Esquema de validación con Yup
-const schema = yup.object().shape({
-    name: yup.string().required("El nombre es obligatorio"),
-    email: yup
-        .string()
-        .email("Correo electrónico no válido")
-        .required("El correo es obligatorio"),
-    message: yup.string().required("El mensaje es obligatorio"),
-});
 
 const ContactPage = () => {
     const [loading, setLoading] = useState(false);
@@ -28,7 +20,7 @@ const ContactPage = () => {
         reset,
         formState: { errors },
     } = useForm({
-        resolver: yupResolver(schema),
+        resolver: yupResolver(contactValidation),
     });
 
     const onSubmit = async (data) => {
@@ -55,7 +47,7 @@ const ContactPage = () => {
     };
 
     return (
-        <div className="max-w-xl w-full my-[3%]">
+        <div className="max-w-xl w-full my-[3%] m-auto">
             <h2 className="text-center mb-6 text-3xl font-semibold">
                 Contáctanos
             </h2>

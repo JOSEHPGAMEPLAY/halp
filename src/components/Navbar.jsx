@@ -14,14 +14,15 @@ import {
 } from "@nextui-org/react";
 import { FaLeaf, FaShoppingCart, FaUser } from "react-icons/fa";
 import { Link as LinkRouter } from "react-router-dom";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { logout } from "../redux/auth/authSlice";
 
 const Navbar = ({ isLoggedIn }) => {
     const [isMenuOpen, setIsMenuOpen] = useState(false);
-    const { user } = useSelector((state) => state.auth);
     const { items } = useSelector((state) => state.cart);
+    const dispatch = useDispatch();
     return (
-        <NavbarPerla onMenuOpenChange={setIsMenuOpen}>
+        <NavbarPerla isBordered onMenuOpenChange={setIsMenuOpen} >
             <NavbarContent>
                 <NavbarMenuToggle
                     aria-label={isMenuOpen ? "Close menu" : "Open menu"}
@@ -55,37 +56,43 @@ const Navbar = ({ isLoggedIn }) => {
                 </NavbarItem>
             </NavbarContent>
             <NavbarContent justify="end">
-                <NavbarItem
-                    as={LinkRouter}
-                    to="/carrito"
-                    className="text-blue-500"
-                >
-                    <Badge
-                        color="danger"
-                        content={items.length}
-                        variant="shadow"
-                    >
-                        <FaShoppingCart className="size-6" />
-                    </Badge>
-                </NavbarItem>
-                <NavbarItem>
                     {isLoggedIn ? (
-                        <Tooltip content={user?.userName ? user.userName : ""}>
-                            <Badge
-                                color="success"
-                                content=""
-                                variant="shadow"
-                                placement="bottom-right"
+                        <>
+                            <NavbarItem
+                                as={LinkRouter}
+                                to="/carrito"
+                                className="text-blue-500"
                             >
-                                <FaUser className="size-6 text-blue-500" />
-                            </Badge>
-                        </Tooltip>
+                                <Badge
+                                    color="danger"
+                                    content={items.length}
+                                    variant="shadow"
+                                >
+                                    <FaShoppingCart className="size-6" />
+                                </Badge>
+                            </NavbarItem>
+                            <NavbarItem>
+                                <Tooltip
+                                    content="Cerrar Sesion"
+                                >
+                                    <Badge
+                                        color="success"
+                                        content=""
+                                        variant="shadow"
+                                        placement="bottom-right"
+                                    >
+                                        <FaUser className="size-6 text-blue-500 cursor-pointer"  onClick={()=>dispatch(logout())}/>
+                                    </Badge>
+                                </Tooltip>
+                            </NavbarItem>
+                        </>
                     ) : (
-                        <Button as={LinkRouter} to="/login">
-                            Iniciar Sesión
-                        </Button>
+                        <NavbarItem>
+                            <Button as={LinkRouter} to="/login">
+                                Iniciar Sesión
+                            </Button>
+                        </NavbarItem>
                     )}
-                </NavbarItem>
             </NavbarContent>
             <NavbarMenu>
                 <NavbarMenuItem>

@@ -63,7 +63,7 @@ const Login = () => {
     };
 
     return (
-        <Card className="w-full max-w-md p-5">
+        <Card className="w-full max-w-md p-5 m-auto">
             <CardHeader className="text-center">
                 <h3 className="text-xl font-semibold">Iniciar Sesión</h3>
             </CardHeader>

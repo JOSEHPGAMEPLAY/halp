@@ -13,23 +13,8 @@ import { DatePicker } from "@nextui-org/date-picker";
 import { addDoc, collection, Timestamp } from "firebase/firestore";
 import { db } from "../services/firebase";
 import { yupResolver } from "@hookform/resolvers/yup";
-import * as yup from "yup";
 import { useForm } from "react-hook-form";
-
-// Esquema de validación con Yup
-const schema = yup.object().shape({
-    name: yup.string().required("El nombre es obligatorio"),
-    email: yup
-        .string()
-        .email("Correo electrónico no válido")
-        .required("El correo es obligatorio"),
-    date: yup
-        .date()
-        .min(new Date(), "La fecha debe ser de hoy o en adelante")
-        .required("La fecha es obligatoria"),
-    service: yup.string().required("Selecciona un servicio"),
-    details: yup.string(),
-});
+import { reservationValidation } from "../validations/ReservationValidation";
 
 const Reservations = () => {
     const {
@@ -39,7 +24,7 @@ const Reservations = () => {
         reset,
         formState: { errors },
     } = useForm({
-        resolver: yupResolver(schema),
+        resolver: yupResolver(reservationValidation),
         defaultValues: {
             name: null,
             email: null,
@@ -80,7 +65,7 @@ const Reservations = () => {
     ];
 
     return (
-            <div className="w-full max-w-lg my-[3%]">
+            <div className="w-full max-w-lg my-[3%] m-auto">
                 <h2 className="text-center mb-6 text-3xl font-semibold">
                     Reserva Tu Visita
                 </h2>

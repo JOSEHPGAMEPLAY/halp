@@ -13,11 +13,13 @@ import {
     useDisclosure,
 } from "@nextui-org/react";
 import React, { useState } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { addToCart } from "../../redux/cart/cartSlice";
 
 const CardProduct = (product) => {
     const dispatch = useDispatch();
+
+    const { user } = useSelector((state) => state.auth);
     const { isOpen, onOpen, onOpenChange } = useDisclosure();
 
     const [quantityToBuy, setQuantityToBuy] = useState(0);
@@ -27,11 +29,10 @@ const CardProduct = (product) => {
         setQuantityToBuy(0);
     };
 
-     // Verificar si el producto tiene la información necesaria antes de renderizar
-     if (!product?.product?.precio) {
+    // Verificar si el producto tiene la información necesaria antes de renderizar
+    if (!product?.product?.precio) {
         return null; // No se renderiza la tarjeta si faltan datos
     }
-
 
     return (
         <Card isHoverable className="overflow-hidden rounded-lg shadow-md">
@@ -66,6 +67,7 @@ const CardProduct = (product) => {
             <Divider />
             <CardFooter className="flex justify-center p-4">
                 <Button
+                    isDisabled={!user}
                     size="md"
                     color="primary"
                     className="w-full font-semibold"

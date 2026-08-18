@@ -5,12 +5,12 @@ import AuthHandler from "../hooks/AuthHandler";
 
 const MainLayout = ({ children }) => {
     const [isLoggedIn, setIsLoggedIn] = useState(false);
-    
+
     return (
-        <div className="flex min-h-screen flex-col">
+        <div className="flex min-h-screen min-w-full flex-col">
             <AuthHandler setIsLoggedIn={setIsLoggedIn} />
             <Navbar isLoggedIn={isLoggedIn} />
-            <main className="flex grow justify-center bg-gray-100">
+            <main className="min-w-full grow justify-center bg-gray-100">
                 {children}
             </main>
             <Footer />
